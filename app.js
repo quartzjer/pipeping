@@ -109,6 +109,7 @@ app.get('/callback', function(req, res) {
     // Fetch the user's service profile data
     singly.get('/profile', { access_token: token.access_token },
       function(err, profile) {
+        if(err || !profile || !profile.body) return res.send(err+" "+profile, 500);
       req.session.profile = profile.body;
 
       res.redirect('/');
