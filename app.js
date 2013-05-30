@@ -119,8 +119,8 @@ app.get('/callback', function(req, res) {
 // need to encrypt the singly token+repo server-side
 app.get('/generate', function(req, res) {
   if (!req.session.accessToken) return res.json({err:"missing token"}, 500);
-  request.get({url:"https://api.singly.com/profiles/facebook", qs:{auth:true, access_token:req.session.accessToken}}, function(err, res, body){
-    if(!body || !body.auth || !body.auth.accessToken) return res.json({err:"couldn't get facebook token"}, 500);
+  request.get({url:"https://api.singly.com/profiles/facebook", qs:{auth:true, access_token:req.session.accessToken}}, function(err, resp, body){
+    if(!body || !body.auth || !body.auth.accessToken) return res.json({err:"couldn't get facebook token",body:body}, 500);
     var pipe = {"service":"facebook", "category":"photos", "schedule":1, "expires_at":1};
     pipe.identifier = Math.random();
     pipe.target_url = 'https://'+req.headers.host+'/drain/';
