@@ -127,11 +127,10 @@ app.get('/generate', function(req, res) {
     if(!body || !body.auth || !body.auth.accessToken) return res.json({err:"couldn't get facebook token",body:body}, 500);
     var pipe = {"service":"facebook", "category":"photos", "schedule":1, "expires_at":1};
     pipe.identifier = Math.random();
-    pipe.target_url = 'https://'+req.headers.host+'/drain/';
+    pipe.target_url = 'https://'+req.headers.host+'/drain/'+pipe.identifier;
     pipe.auth = {"token":body.auth.accessToken};
     var args = {};
-    args.url = "https://v2beta.singly.com/applications/"+pipeKey+"/pipes";
-    args.auth = {user:pipeKey, pass:pipeSecret};
+    args.url = "https://"+pipeKey+":"+pipeSecret+"@v2beta.singly.com/applications/"+pipeKey+"/pipes";
     args.body = JSON.stringify(pipe);
     args.headers = {"Content-Type":"application/json"};
     console.log(JSON.stringify(args));
