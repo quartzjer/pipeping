@@ -15,6 +15,9 @@ var request = require('request');
 var sprintf = require('sprintf').sprintf;
 var partials = require('express-partials');
 var serializer = require('serializer');
+var redisURL = require('url').parse(process.env.REDISCLOUD_URL);
+var client = require("redis").createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
+client.auth(redisURL.auth.split(":")[1]);
 
 // The port that this express app will listen on
 var port = process.env.PORT || 7464;
@@ -22,6 +25,8 @@ var port = process.env.PORT || 7464;
 // Your client ID and secret from http://dev.singly.com/apps
 var clientId = process.env.SINGLY_CLIENT_ID;
 var clientSecret = process.env.SINGLY_CLIENT_SECRET;
+var pipeKey = process.env.PIPE_KEY;
+var pipeSecret = process.env.PIPE_SECRET;
 
 // used to create encrypted unique worker url
 var serialize = serializer.createSecureSerializer(clientSecret, clientSecret);

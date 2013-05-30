@@ -6,6 +6,7 @@
       "ejs": "*",
       "express": "3.0.0rc4",
       "querystring": "*",
+      "redis": "*",
       "request": "2.9.203",
       "sprintf": "*",
       "serializer": "*",
