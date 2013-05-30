@@ -128,6 +128,8 @@ app.get('/generate', function(req, res) {
     var args = {};
     args.url = "https://v2beta.singly.com/applications/"+pipeKey+"/pipes";
     args.auth = {user:pipeKey, pass:pipeSecret};
+    args.body = pipe;
+    console.log(args);
     request.post(args, function(err, resp, body){
       if(resp.statusCode != 201) return res.json({err:resp.statusCode+" "+body}, 500);
       res.json(body);
