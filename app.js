@@ -118,11 +118,21 @@ app.get('/callback', function(req, res) {
 
 // need to encrypt the singly token+repo server-side
 app.get('/generate', function(req, res) {
-  if (!req.session.accessToken) return res.send("missing token", 500);
-  if (!req.session.profile || !req.session.profile.services.github) return res.send("missing github", 500);
-  if (!req.query.repo) return res.json("missing repo", 500);
-  var syncKey = serialize.stringify({token:req.session.accessToken, repo:req.query.repo, user:req.session.profile.services.github.handle, created:Date.now()});
-  res.send("just testing, <a href='/sync?key="+syncKey+"'>sync url</a>");
+  if (!req.session.accessToken) return res.json({err:"missing token"}, 500);
+  request.get({url:"https://api.singly.com/profiles/facebook", qs:{auth:true, access_token:req.session.accessToken}}, function(err, res, body){
+    if(!body || !body.auth || !body.auth.accessToken) return res.json({err:"couldn't get facebook token"}, 500);
+    var pipe = {"service":"facebook", "category":"photos", "schedule":1, "expires_at":1};
+    pipe.identifier = Math.random();
+    pipe.target_url = 'https://'+req.headers.host+'/drain/';
+    pipe.auth = {"token":body.auth.accessToken};
+    var args = {};
+    args.url = "https://v2beta.singly.com/applications/"+pipeKey+"/pipes";
+    args.auth = {user:pipeKey, pass:pipeSecret};
+    request.post(args, function(err, resp, body){
+      if(resp.statusCode != 201) return res.json({err:resp.statusCode+" "+body}, 500);
+      res.json(body);
+    })
+  });
 });
 
 // actually perform the work, broke out into a different file
