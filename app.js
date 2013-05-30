@@ -136,6 +136,17 @@ app.get('/sync', function(req, res) {
   
 });
 
+app.post('/drain/:id', function(req, res){
+  res.send(200);
+  if(Array.isArray(req.body)) redis.incrby(req.params.id, req.body.length);
+});
+
+app.get('/drain/:id', function(req, res){
+  redis.get(req.params.id, function(err, val){
+    res.json({total:val});
+  })
+});
+
 app.listen(port);
 
 console.log(sprintf('Listening on port %s using API endpoint %s.', port, apiBaseUrl));
