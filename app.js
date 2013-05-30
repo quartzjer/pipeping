@@ -16,8 +16,8 @@ var sprintf = require('sprintf').sprintf;
 var partials = require('express-partials');
 var serializer = require('serializer');
 var redisURL = require('url').parse(process.env.REDISCLOUD_URL);
-var client = require("redis").createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
-client.auth(redisURL.auth.split(":")[1]);
+var redis = require("redis").createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
+redis.auth(redisURL.auth.split(":")[1]);
 
 // The port that this express app will listen on
 var port = process.env.PORT || 7464;
