@@ -102,10 +102,12 @@ app.get('/callback', function(req, res) {
   var code = req.param('code');
 
   // Exchange the OAuth2 code for an access token
+  var start = Date.now();
   singly.getAccessToken(code, function(err, accessTokenRes, token) {
     // Save the token for future API requests
     req.session.accessToken = token.access_token;
 
+    var start2 = Date.now();
     // Fetch the user's service profile data
     singly.get('/profile', { access_token: token.access_token },
       function(err, profile) {
@@ -113,6 +115,7 @@ app.get('/callback', function(req, res) {
       req.session.profile = profile.body;
 
       res.redirect('/');
+      console.log("TOOK",Date.now() - start2, Date.now() - start);
     });
   });
 });
@@ -131,7 +134,7 @@ app.get('/generate', function(req, res) {
     args.auth = {user:pipeKey, pass:pipeSecret};
     args.body = pipe;
     args.json = true;
-    console.log(args);
+    console.log(JSON.stringify(args));
     request.post(args, function(err, resp, body){
       if(resp.statusCode != 201) return res.json({err:resp.statusCode+" "+body}, 500);
       res.json(body);
