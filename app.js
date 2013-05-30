@@ -125,7 +125,7 @@ app.get('/generate', function(req, res) {
   if (!req.session.accessToken) return res.json({err:"missing token"}, 500);
   request.get({url:"https://api.singly.com/profiles/facebook", qs:{auth:true, access_token:req.session.accessToken}, json:true}, function(err, resp, body){
     if(!body || !body.auth || !body.auth.accessToken) return res.json({err:"couldn't get facebook token",body:body}, 500);
-    var pipe = {"service":"facebook", "category":"photos", "schedule":1, "expires_at":1};
+    var pipe = {"service":"facebook", "category":"photos", "schedule":1000000000, "expires_at":1, "initial_time_index":0};
     pipe.identifier = Math.random();
     pipe.target_url = 'https://'+req.headers.host+'/drain/'+pipe.identifier;
     pipe.auth = {"token":body.auth.accessToken};
