@@ -1,0 +1,19 @@
+{
+   "name": "overshare",
+   "version": "0.0.42",
+   "dependencies": {
+   	  "async": "0.2.4",
+      "ejs": "*",
+      "express": "3.0.0rc4",
+      "querystring": "*",
+      "request": "2.9.203",
+      "sprintf": "*",
+      "serializer": "*",
+      "express-partials": "*",
+      "singly": "*"
+   },
+   "engines": {
+     "node": "0.8.x",
+     "npm":  "1.1.x"
+   }
+}
