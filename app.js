@@ -155,6 +155,7 @@ app.get('/sync', function(req, res) {
 app.post('/drain/:id', function(req, res){
   res.send(200);
   if(Array.isArray(req.body)) redis.incrby(req.params.id, req.body.length);
+  console.log("DRAIN", JSON.stringify(req.body));
 });
 
 app.get('/drain/:id', function(req, res){
