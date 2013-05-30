@@ -141,17 +141,6 @@ app.get('/generate', function(req, res) {
   });
 });
 
-// actually perform the work, broke out into a different file
-app.get('/sync', function(req, res) {
-  if (!req.query.key) return res.send("missing sync key", 500);
-  var options;
-  try {
-    options = serialize.parse(req.query.key);
-  } catch(E) {}
-  if (!options) return res.send("invalid sync key", 500);  
-  
-});
-
 app.post('/drain/:id', function(req, res){
   res.send(200);
   if(Array.isArray(req.body)) redis.incrby(req.params.id, req.body.length);
